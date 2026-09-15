@@ -31,7 +31,7 @@ class RepositoryGenerator extends GeneratorForAnnotation<DataRepository> {
           "Can't generate repository for $className. Please use @DataRepository on a class.");
     }
 
-    final annot = TypeChecker.fromRuntime(JsonSerializable);
+    final annot = TypeChecker.typeNamed(JsonSerializable);
 
     var fieldRename = annot
         .firstAnnotationOfExact(classElement, throwOnUnresolved: false)
@@ -67,9 +67,9 @@ class RepositoryGenerator extends GeneratorForAnnotation<DataRepository> {
         .fold<Set<Map<String, String?>>>({}, (result, field) {
       final relationshipClassElement = field.typeElement;
 
-      final relationshipAnnotation = TypeChecker.fromRuntime(DataRelationship)
+      final relationshipAnnotation = TypeChecker.typeNamed(DataRelationship)
           .firstAnnotationOfExact(field, throwOnUnresolved: false);
-      final jsonKeyAnnotation = TypeChecker.fromRuntime(JsonKey)
+      final jsonKeyAnnotation = TypeChecker.typeNamed(JsonKey)
           .firstAnnotationOfExact(field, throwOnUnresolved: false);
 
       final jsonKeyIgnored =
@@ -129,13 +129,13 @@ and execute a code generation build again.
         final fieldCase = fieldRename.getField('_name')?.toStringValue();
         switch (fieldCase) {
           case 'kebab':
-            keyName = field.name.kebab;
+            keyName = field.name!.kebab;
             break;
           case 'snake':
-            keyName = field.name.snake;
+            keyName = field.name!.snake;
             break;
           case 'pascal':
-            keyName = field.name.pascal;
+            keyName = field.name!.pascal;
             break;
           case 'none':
             keyName = field.name;
@@ -230,14 +230,14 @@ RelationshipGraphNode<${rel['type']}> get ${rel['name']} {
               nullabilitySuffix: NullabilitySuffix.none);
       mixinMethods.addAll(instantiatedMixinType.methods);
       displayName =
-          instantiatedMixinType.getDisplayString(withNullability: false);
+          instantiatedMixinType.getDisplayString();
 
       // add finders
       for (final field in mixinMethods) {
         final hasFinderAnnotation =
-            TypeChecker.fromRuntime(DataFinder).hasAnnotationOfExact(field);
+            TypeChecker.typeNamed(DataFinder).hasAnnotationOfExact(field);
         if (hasFinderAnnotation) {
-          finders.add(field.name);
+          finders.add(field.name!);
         }
       }
 
@@ -262,7 +262,7 @@ RelationshipGraphNode<${rel['type']}> get ${rel['name']} {
               nullabilitySuffix: NullabilitySuffix.none);
       mixinMethods.addAll(instantiatedMixinType.methods);
       displayName =
-          instantiatedMixinType.getDisplayString(withNullability: false);
+          instantiatedMixinType.getDisplayString();
       return displayName;
     }).toSet();
 

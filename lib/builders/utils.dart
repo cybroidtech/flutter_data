@@ -5,8 +5,8 @@ import 'package:flutter_data/flutter_data.dart';
 import 'package:pubspec_parse/pubspec_parse.dart';
 import 'package:source_gen/source_gen.dart';
 
-final relationshipTypeChecker = TypeChecker.fromRuntime(Relationship);
-final dataModelTypeChecker = TypeChecker.fromRuntime(DataModelMixin);
+final relationshipTypeChecker = TypeChecker.typeNamed(Relationship);
+final dataModelTypeChecker = TypeChecker.typeNamed(DataModelMixin);
 
 extension ClassElementX on ClassElement {
   ConstructorElement? get freezedConstructor => constructors
@@ -24,13 +24,13 @@ extension ClassElementX on ClassElement {
             field.isPublic &&
             (field.type.element as ClassElement).supertype != null &&
             relationshipTypeChecker.isSuperOf(field.type.element!))
-          field.name: field,
+          field.name!: field,
       // also check freezed
       if (freezedConstructor != null)
-        for (final param in freezedConstructor!.parameters)
+        for (final param in freezedConstructor!.formalParameters)
           if (param.type.element != null &&
               relationshipTypeChecker.isSuperOf(param.type.element!))
-            param.name: param,
+            param.name!: param,
     };
 
     return map.values.toList();

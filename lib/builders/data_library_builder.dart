@@ -24,7 +24,7 @@ class DataExtensionIntermediateBuilder implements Builder {
     if (!await resolver.isLibrary(buildStep.inputId)) return;
     final lib = LibraryReader(await buildStep.inputLibrary);
 
-    final annotation = TypeChecker.fromRuntime(DataRepository);
+    final annotation = TypeChecker.typeNamed(DataRepository);
     final members = [
       for (final member in lib.annotatedWith(annotation)) member,
     ];
@@ -38,7 +38,7 @@ class DataExtensionIntermediateBuilder implements Builder {
               member.annotation.read('internalType').isNull
                   ? DataHelpers.internalTypeFor(member.element.name!)
                   : member.annotation.read('internalType').stringValue,
-              member.element.location!.components.first,
+              member.element.library!.uri.toString(),
               member.annotation.read('remote').boolValue,
             ].join('#');
           }).join(';'));
