@@ -45,3 +45,27 @@ jobs:
         uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+
+  # Verifies flutter_data's own builders (data_library_builder,
+  # repository_builder) still generate against a current build_runner,
+  # in isolation from any other codegen package (riverpod_generator etc.)
+  # a consuming app might also have in its graph. Apps that see
+  # build_runner fail with those combined shouldn't read that as this
+  # fork's codegen being broken — see whether the failure survives
+  # without flutter_data in the mix before assuming this fork is at fault.
+  codegen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: dart-lang/setup-dart@v1.5
+      - uses: actions/checkout@v2
+      - name: Install dependencies (root)
+        run: dart pub get
+      - name: Install dependencies (example)
+        working-directory: example
+        run: dart pub get
+      - name: Generate
+        working-directory: example
+        run: dart run build_runner build --delete-conflicting-outputs
+      - name: Fail if generation produced no output
+        working-directory: example
+        run: test -f lib/main.data.dart || (echo "::error::main.data.dart was not generated" && exit 1)
