@@ -44,3 +44,13 @@ dev_dependencies:
   mockito: ^5.0.9
   source_gen_test: ^1.0.0
   test: ^1.22.0
+
+# frontend_server_client 3.2.0 (what every consumer here resolves to
+# unforced) can't find frontend_server.dart.snapshot under current Dart
+# SDKs — the file's location changed and 3.2.0 predates that. The fix
+# lives entirely in frontend_server_client's own 4.0.0 release, not in
+# anything this package controls; the transitive constraints from test/
+# build_runner already allow 4.x, nothing was pinning it low on purpose.
+# See https://github.com/dart-lang/sdk/issues/60198.
+dependency_overrides:
+  frontend_server_client: ^4.0.0
