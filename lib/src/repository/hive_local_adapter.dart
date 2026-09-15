@@ -3,7 +3,7 @@ part of flutter_data;
 /// Hive implementation of [LocalAdapter] and Hive's [TypeAdapter].
 // ignore: must_be_immutable
 abstract class HiveLocalAdapter<T extends DataModelMixin<T>>
-    extends LocalAdapter<T> with TypeAdapter<T> {
+    extends LocalAdapter<T> implements TypeAdapter<T> {
   HiveLocalAdapter(Ref ref, {int? typeId})
       : _typeId = typeId,
         _hiveLocalStorage = ref.read(hiveLocalStorageProvider),
