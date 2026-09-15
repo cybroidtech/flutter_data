@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:typed_data';
 
-import 'package:hive/hive.dart';
-import 'package:hive/src/box/default_compaction_strategy.dart';
-import 'package:hive/src/box/default_key_comparator.dart';
+import 'package:hive_ce/hive.dart';
+import 'package:hive_ce/src/box/default_compaction_strategy.dart';
+import 'package:hive_ce/src/box/default_key_comparator.dart';
 import 'package:mockito/mockito.dart';
 
 class FakeBox<T> extends Fake implements Box<T> {
