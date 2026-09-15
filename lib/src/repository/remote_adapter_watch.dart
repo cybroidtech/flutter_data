@@ -60,7 +60,7 @@ mixin _RemoteAdapterWatch<T extends DataModelMixin<T>> on _RemoteAdapter<T> {
           return [];
         },
       );
-      if (remote) {
+      if (remote!) {
         // trigger doneLoading to ensure state is updated with isLoading=false
         graph._notify([label.toString()], type: DataGraphEventType.doneLoading);
       }
@@ -206,7 +206,7 @@ mixin _RemoteAdapterWatch<T extends DataModelMixin<T>> on _RemoteAdapter<T> {
       );
       // trigger doneLoading to ensure state is updated with isLoading=false
       final modelKey = model?._key;
-      if (remote && modelKey != null) {
+      if (remote! && modelKey != null) {
         graph._notify([modelKey, label.toString()],
             type: DataGraphEventType.doneLoading);
       }
