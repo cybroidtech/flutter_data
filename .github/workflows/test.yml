@@ -2,9 +2,9 @@ name: test
 
 on:
   push:
-    branches: [master]
+    branches: [master, 1.6.x, hive-ce]
   pull_request:
-    branches: [master]
+    branches: [master, 1.6.x]
 
 jobs:
   build:
